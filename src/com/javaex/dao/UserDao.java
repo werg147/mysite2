@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.servlet.http.HttpSession;
+
 import com.javaex.vo.UserVo;
 
 public class UserDao {
@@ -92,6 +94,110 @@ public class UserDao {
 
 		return count;
 
+	}
+	
+	//로그인한 유저 정보
+	public UserVo getUser(String id, String pw) {
+		UserVo userVo = null;
+		
+		getConnection();
+		
+		try {
+			String query = "";
+			query += " select no, ";
+			query += "        name ";
+			query += " from users ";
+			query += " where id = ? ";
+			query += " and password = ? ";
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, id);
+			pstmt.setString(2, pw);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				int no = rs.getInt("no");
+				String name = rs.getString("name");
+				
+				userVo = new UserVo(no,name);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		close();
+		
+		return userVo;
+	}
+	
+	//수정
+	public int update(UserVo userVo) {
+		int count = 0;
+		
+		getConnection();
+		
+		try {
+			String query = "";
+			query += " update users ";
+			query += " set password = ?, ";
+			query += "     name = ?, ";
+			query += "     gender = ? ";
+			query += " where no = ? ";
+			
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, userVo.getPassword());
+			pstmt.setString(2, userVo.getName());
+			pstmt.setString(3, userVo.getGender());
+			pstmt.setInt(4, userVo.getNo());
+			
+			count = pstmt.executeUpdate();
+		
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		close();
+		
+		return count;
+	}
+	
+	//no로 유저정보 가져오기
+	public UserVo loginUser(int no) {
+		UserVo userVo = null;
+		
+		getConnection();
+		
+		try {
+			String query = "";
+			query += " select password, ";
+			query += "        name, ";
+			query += "        gender ";
+			query += " from users ";
+			query += " where no = ? ";
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, no);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				String pw = rs.getString("password");
+				String name = rs.getString("name");
+				String gender = rs.getString("gender");
+				
+				userVo = new UserVo(pw, name, gender);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		close();
+		
+		return userVo;
 	}
 
 }
