@@ -96,7 +96,7 @@ public class UserDao {
 
 	}
 	
-	//로그인한 유저 정보
+	//로그인할때 유저정보 세션 저장용으로 쓴 메소드
 	public UserVo getUser(String id, String pw) {
 		UserVo userVo = null;
 		
@@ -164,8 +164,8 @@ public class UserDao {
 		return count;
 	}
 	
-	//no로 유저정보 가져오기
-	public UserVo loginUser(int no) {
+	//no로 유저정보 가져오기 (메소드오버로딩)
+	public UserVo getUser(int no) {
 		UserVo userVo = null;
 		
 		getConnection();

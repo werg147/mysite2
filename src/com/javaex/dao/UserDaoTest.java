@@ -11,6 +11,12 @@ public class UserDaoTest {
 
 		
 		System.out.println(userVo);
+		
+		UserVo loginUser = new UserVo();
+		loginUser = userDao.getUser(userVo.getId(),userVo.getPassword()); 
+		
+		System.out.println(loginUser);
+		
 	}
 
 }

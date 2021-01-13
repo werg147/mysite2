@@ -69,7 +69,7 @@ public class UserController extends HttpServlet {
 			if(authVo == null) { //로그인 실패
 				System.out.println("로그인 실패");
 				//리다이렉트 --> loginForm
-				WebUtil.redirect(request, response, "/mysite2/user?action=loginForm");
+				WebUtil.redirect(request, response, "/mysite2/user?action=loginForm&result=fail");
 				
 			} else { //로그인 성공
 				System.out.println("로그인 성공");
@@ -99,44 +99,50 @@ public class UserController extends HttpServlet {
 			HttpSession session = request.getSession();
 			UserVo authUser = (UserVo)session.getAttribute("authUser");
 			
+			//로그인 안 한 상태면 가져올수없음 (로그인 안하고 modifyForm접근시 오류)
+			int no = authUser.getNo();
+			
 			//Dao --> 로그인유저 정보 가져오기
 			UserDao userDao = new UserDao();
+			UserVo userVo = userDao.getUser(no);
 			
-			//vo에 담기
-			UserVo userVo = new UserVo();
-			userVo = userDao.loginUser(authUser.getNo()); //authUser에서 no만 꺼내어 조회 (int에 세션값을 억지로 집어넣으려는등..많은실패가 있었다)
+			System.out.println("getUser(no)" + userVo);
 			
 			//Attribute에 담아 데이터전달
-			request.setAttribute("loginUser", userVo);
+			request.setAttribute("userVo", userVo);
 			
-			//리다이렉트 --> modifyForm
+			//포워드 --> modifyForm
 			WebUtil.forward(request, response, "/WEB-INF/views/user/modifyForm.jsp");
 		
-		} else if("update".equals(action)) { //action=update까지 오긴 하지만 수정이 안됨
+		} else if("modify".equals(action)) { //action=update까지 오긴 하지만 수정이 안됨
 			System.out.println("수정");
 			
-			//session no를 이용해서 로그인한 유저 정보 가져오기
-			HttpSession session = request.getSession();
-			UserVo authUser = (UserVo)session.getAttribute("authUser");
-			
+			//user?pw=123&name=이수정&gender=male&action=modify
 			//파라미터값 읽기
 			String pw = request.getParameter("pw");
 			String name = request.getParameter("name");
 			String gender = request.getParameter("gender");
-			int no = Integer.parseInt(request.getParameter("no"));
 			
-			//vo에 담기
-			UserVo userVo = new UserVo(no, pw, name, gender); 
+			//세션에서 no 가져오기
+			HttpSession session = request.getSession();
+			UserVo authUser = (UserVo)session.getAttribute("authUser");
+			int no = authUser.getNo();
 			
-			//Dao -> 수정하기
+			//UserVo로 만들기
+			UserVo userVo = new UserVo(no, pw, name, gender);
+			//System.out.println(userVo); 테스트
+			
+			//Dao -> update() 으로 정보업데이트
 			UserDao userDao = new UserDao();
 			userDao.update(userVo);
 			
-			//로그인한 유저 정보가 바뀌지않음 -> session에 다시저장! ->하니까 됨
-			session.setAttribute("loginUser", userVo);
+			//session 정보도 업데이트
+			//session name값만 변경 --> ㅇㅇㅇ님 안녕하세요^^ 에서 이름바뀜
+			authUser.setName(name);
 			
-			//리다이렉트 --> main
+			//리다이렉트 -> main
 			WebUtil.redirect(request, response, "/mysite2/main");
+			
 		}
 		
 		
