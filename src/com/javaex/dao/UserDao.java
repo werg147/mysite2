@@ -172,7 +172,9 @@ public class UserDao {
 		
 		try {
 			String query = "";
-			query += " select password, ";
+			query += " select no, ";
+			query += "        id, ";
+			query += "        password, ";
 			query += "        name, ";
 			query += "        gender ";
 			query += " from users ";
@@ -184,11 +186,13 @@ public class UserDao {
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
+				int NO = rs.getInt("no");
+				String id = rs.getString("id");		
 				String pw = rs.getString("password");
 				String name = rs.getString("name");
 				String gender = rs.getString("gender");
 				
-				userVo = new UserVo(pw, name, gender);
+				userVo = new UserVo(NO, id, pw, name, gender);
 			}
 			
 		} catch (SQLException e) {

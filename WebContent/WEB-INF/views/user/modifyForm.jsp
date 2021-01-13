@@ -6,8 +6,9 @@
 	UserVo authUser = (UserVo)session.getAttribute("authVo"); //헤더 로그인부분 (로그인했을때,안했을때)
 	UserVo loginUser = (UserVo)request.getAttribute("loginUser"); //로그인 유저 정보
 	
-	String id = (String)session.getAttribute("id"); //authUser에서 id값만 추출하기가 안됨.. id값만 따로 부르기
-	Integer no = (Integer)session.getAttribute("no"); //int로 담았을때 오류 -> Integer로 담으니 오류해결, 하지만 수정할때 오류가 나기 시작함
+	//로그인 유저 정보에 id와 no값도 쿼리문으로 추가해서 해결
+	//String id = (String)session.getAttribute("id"); //authUser에서 id값만 추출하기가 안됨.. id값만 따로 부르기
+	//Integer no = (Integer)session.getAttribute("no"); //int로 담았을때 오류 -> Integer로 담으니 오류해결, 하지만 수정할때 오류가 나기 시작함
 	
 %>
 
@@ -77,7 +78,7 @@
 						<!-- 아이디 -->
 						<div class="form-group">
 							<label class="form-text" for="input-uid">아이디</label> 
-							<span class="text-large bold"><%=id %></span>
+							<span class="text-large bold"><%=loginUser.getId() %></span>
 						</div>
 
 						<!-- 비밀번호 -->
@@ -109,7 +110,7 @@
 		                    <button type="submit" id="btn-submit">회원정보수정</button>
 		                    <input type="hidden" name="action" value="update">
 		                </div>
-		                <input type="hidden" name="no" value="<%=no%>">
+		                <input type="hidden" name="no" value="<%=loginUser.getNo() %>">
 						
 					</form>
 				

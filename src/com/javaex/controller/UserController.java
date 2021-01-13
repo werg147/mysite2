@@ -112,7 +112,7 @@ public class UserController extends HttpServlet {
 			//리다이렉트 --> modifyForm
 			WebUtil.forward(request, response, "/WEB-INF/views/user/modifyForm.jsp");
 		
-		} else if("update".equals(action)) { //action=update까지 오긴 하지만 수정이 안됨..
+		} else if("update".equals(action)) { //action=update까지 오긴 하지만 수정이 안됨
 			System.out.println("수정");
 			
 			//session no를 이용해서 로그인한 유저 정보 가져오기
@@ -123,15 +123,18 @@ public class UserController extends HttpServlet {
 			String pw = request.getParameter("pw");
 			String name = request.getParameter("name");
 			String gender = request.getParameter("gender");
-			Integer no = (Integer)session.getAttribute("no");
+			int no = Integer.parseInt(request.getParameter("no"));
 			
 			//vo에 담기
-			UserVo userVo = new UserVo(no, pw, name, gender); //여기서 오류 수정폼에서 no를 Integer로 담았어서 읽지 못하는건가?
+			UserVo userVo = new UserVo(no, pw, name, gender); 
 			
 			//Dao -> 수정하기
 			UserDao userDao = new UserDao();
 			userDao.update(userVo);
-		
+			
+			//로그인한 유저 정보가 바뀌지않음 -> session에 다시저장! ->하니까 됨
+			session.setAttribute("loginUser", userVo);
+			
 			//리다이렉트 --> main
 			WebUtil.redirect(request, response, "/mysite2/main");
 		}
