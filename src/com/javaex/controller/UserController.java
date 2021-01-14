@@ -114,7 +114,7 @@ public class UserController extends HttpServlet {
 			//포워드 --> modifyForm
 			WebUtil.forward(request, response, "/WEB-INF/views/user/modifyForm.jsp");
 		
-		} else if("modify".equals(action)) { //action=update까지 오긴 하지만 수정이 안됨
+		} else if("modify".equals(action)) { 
 			System.out.println("수정");
 			
 			//user?pw=123&name=이수정&gender=male&action=modify

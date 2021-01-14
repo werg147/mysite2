@@ -1,9 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
-<%
-	int no = Integer.parseInt(request.getParameter("no"));
-%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
@@ -19,7 +15,7 @@
 	<div id="wrap">
 
 		<!-- header + navi 공통으로 뺌 -->
-		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 
 		<div id="aside">
 			<h2>방명록</h2>
@@ -61,8 +57,9 @@
 							<td><a href="/guestbook2/gbc">[메인으로 돌아가기]</a></td>
 						</tr>
 					</table>
-					<input type='hidden' name="no" value="<%=no%>">
+					<input type='hidden' name="no" value="${param.no}">
 					<input type='hidden' name="action" value="delete">
+					
 				</form>
 				
 			</div>
@@ -72,7 +69,7 @@
 		<div class="clear"></div>
 		
 		<!-- //footer -->
-		<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/footer.jsp"></c:import>
 
 	</div>
 	<!-- //wrap -->
