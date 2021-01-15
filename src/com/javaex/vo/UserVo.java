@@ -2,10 +2,10 @@ package com.javaex.vo;
 
 public class UserVo {
 
-	private int no;
+	protected int no;
 	private String id;
 	private String password;
-	private String name;
+	protected String name;
 	private String gender;
 
 	public UserVo() {

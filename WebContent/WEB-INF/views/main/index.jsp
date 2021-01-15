@@ -16,7 +16,6 @@
 
 		<!-- header + navi 공통으로 뺌 -->
 		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
-		
 
 		<!-- aside없음 -->
 
