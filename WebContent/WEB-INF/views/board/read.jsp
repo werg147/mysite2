@@ -67,7 +67,7 @@
 						<!-- 내용 -->
 						<div id="txt-content">
 							<span class="form-value" >
-								${read.content}
+								<pre><c:out value="${read.content}"/></pre>
 							</span>
 						</div>
 						

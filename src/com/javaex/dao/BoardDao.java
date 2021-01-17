@@ -226,9 +226,82 @@ public class BoardDao{
 		return count;
 	}
 	
-	
+	//조회수 추가 (게시글번호를 받아서)
+	public int hitCount(int no) {
+		int count = 0;
+		
+		getConnection();
+		
+		try {
+			String query = "";
+			query += " update board ";
+			query += " set hit = hit + 1 ";
+			query += " where no = ?";
+			
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setInt(1, no);
+			
+			count = pstmt.executeUpdate();
 
-	
+			if(count == 1) {
+				System.out.println("조회수 1 증가");
+			} else {
+				System.out.println("조회수 증가안함");
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		close();
+		return count;
+	}
+
+	//검색기능 추가
+	// 게시판 리스트
+		public List<BoardVo> getSearchList(String search) {
+
+			List<BoardVo> boardList = new ArrayList<BoardVo>();
+
+			getConnection();
+
+			try {
+				String query = "";
+				query += " select bo.no, ";
+				query += "        bo.title, ";
+				query += "        us.name, ";
+				query += "        bo.hit, ";
+				query += "        to_char(bo.reg_date, 'YYYY-MM-DD') reg_date ";
+				query += " from board bo, users us ";
+				query += " where bo.user_no = us.no ";
+				query += " and title like % + ? + % ";
+				query += " order by bo.no desc ";
+
+				pstmt = conn.prepareStatement(query);
+
+				rs = pstmt.executeQuery();
+
+				while (rs.next()) {
+					int no = rs.getInt("no");
+					String title = rs.getString("title");
+					String name = rs.getString("name");
+					int hit = rs.getInt("hit");
+					String regDate = rs.getString("reg_date");
+					pstmt.setString(1, search);
+
+					BoardVo vo = new BoardVo(no, title, name, hit, regDate);
+					boardList.add(vo);
+				}
+
+			} catch (SQLException e) {
+				System.out.println("error:" + e);
+			}
+
+			close();
+			return boardList;
+		}
+
 	
 	
 	

@@ -60,6 +60,9 @@ public class BoardController extends HttpServlet {
 			//게시글 가져오기
 			BoardDao boardDao = new BoardDao();
 		    BoardVo read = boardDao.getRead(no);
+		    
+		    //조회수 1 증가
+		    boardDao.hitCount(no);
 			
 			//리스트 담기
 			request.setAttribute("read", read);
