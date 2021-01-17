@@ -73,6 +73,7 @@ public class GuestDao {
 				query += "        content, ";
 				query += "        reg_date ";
 				query += " from guestbook ";
+				query += " order by no desc ";
 				
 				pstmt = conn.prepareStatement(query); //쿼리문 준비
 				

@@ -21,14 +21,8 @@
 		<!-- header + navi 공통으로 뺌 -->
 		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 
-		<div id="aside">
-			<h2>방명록</h2>
-			<ul>
-				<li><a href="/mysite2/guest">일반방명록</a></li>
-				<li>ajax방명록</li>
-			</ul>
-		</div>
 		<!-- //aside -->
+		<c:import url="/WEB-INF/views/include/aside_guest.jsp"></c:import>
 
 		<div id="content">
 			

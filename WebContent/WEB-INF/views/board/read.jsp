@@ -71,7 +71,10 @@
 							</span>
 						</div>
 						
-						<a id="btn_modify" href="">수정</a>
+						<c:if test="${authUser != null}">
+							<a id="btn_modify" href="/mysite2/board?action=modifyForm&no=${read.no}">수정</a>
+						</c:if>
+						
 						<a id="btn_modify" href="/mysite2/board?action=list">목록</a>
 						
 					</form>

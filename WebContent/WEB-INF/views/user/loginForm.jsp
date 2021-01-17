@@ -56,10 +56,11 @@
 							<label class="form-text" for="input-pass">비밀번호</label> 
 							<input type="text" id="input-pass" name="pw" value="" placeholder="비밀번호를 입력하세요"	>
 						</div>
-	
-						 <!-- session.setAttribute("authUser", authVo); -->
+						
+						<!-- WebUtil.redirect(request, response, "/mysite2/user?action=loginForm&result=fail");	 
+						     result키 값이 fail이면 실패 -->
 						<c:choose>
-							<c:when test="${empty authUser}">
+							<c:when test="${param.result == 'fail'}">
 							<p>
 							로그인에 실패했습니다. 다시 로그인 해주세요.
 							</p>

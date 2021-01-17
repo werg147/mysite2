@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.javaex.vo.BoardVo;
+import com.javaex.vo.UserVo;
 
-public class BoardDao {
+public class BoardDao{
 
 	Connection conn = null;
 	PreparedStatement pstmt = null;
@@ -110,7 +111,8 @@ public class BoardDao {
 			query += "		  bo.hit, ";
 			query += "        to_char(bo.reg_date, 'YYYY-MM-DD') reg_date, ";
 			query += " 		  bo.title, ";
-			query += "        bo.content ";
+			query += "        bo.content, ";
+			query += "        bo.no ";
 			query += " from board bo, users us ";
 			query += " where bo.user_no = us.no ";
 			query += " and bo.no = ? ";
@@ -126,8 +128,9 @@ public class BoardDao {
 				String regDate = rs.getString("reg_date");
 				String title = rs.getString("title");
 				String content = rs.getString("content");
+				int No = rs.getInt("no");
 				
-				boardVo = new BoardVo(name, hit, regDate, title, content);
+				boardVo = new BoardVo(name, hit, regDate, title, content, No);
 
 			}
 
@@ -170,6 +173,8 @@ public class BoardDao {
 		
 		getConnection();
 		
+		UserVo userVo = new UserVo();
+		
 		try {
 			String query = "";
 			query += " insert into board ";
@@ -190,6 +195,38 @@ public class BoardDao {
 		close();
 		return count;
 	}
+	
+	//게시글 수정
+	public int modify(BoardVo boardVo) {
+		int count = 0;
+		
+		getConnection();
+		
+		try {
+			String query = "";
+			query += " update board ";
+			query += " set title = ?, ";
+			query += "     content = ? ";
+			query += " where user_no = ? ";
+			
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, boardVo.getTitle());
+			pstmt.setString(2, boardVo.getContent());
+			pstmt.setInt(3, boardVo.getUserNo());
+			
+			count = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		
+		
+		close();
+		return count;
+	}
+	
+	
 
 	
 	
