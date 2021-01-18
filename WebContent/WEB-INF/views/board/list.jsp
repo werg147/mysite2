@@ -38,10 +38,11 @@
 
 			<div id="board">
 				<div id="list">
-					<form action="" method="">
+					<form action="/mysite2/board" method="get">
 						<div class="form-group text-right">
-							<input type="text">
+							<input type="text" name="key" value="">
 							<button type="submit" id=btn_search>검색</button>
+							<input type="hidden" name="action" value="search">
 						</div>
 					</form>
 					<table >
@@ -56,16 +57,16 @@
 							</tr>
 						</thead>
 						<tbody>
-						<c:forEach items="${boardList}" var="bList">
+						<c:forEach items="${boardList}" var="boardVo">
 							<tr>
-								<td>${bList.no}</td>
-								<td class="text-left"><a href="/mysite2/board?action=read&no=${bList.no}">${bList.title}</a></td>
-								<td>${bList.name}</td>
-								<td>${bList.hit}</td>
-								<td>${bList.regDate}</td>
+								<td>${boardVo.no}</td>
+								<td class="text-left"><a href="/mysite2/board?action=read&no=${boardVo.no}">${boardVo.title}</a></td>
+								<td>${boardVo.name}</td>
+								<td>${boardVo.hit}</td>
+								<td>${boardVo.regDate}</td>
 								<td>
-									<c:if test="${authUser != null}">
-										<a href="/mysite2/board?action=delete&no=${bList.no}">[삭제]</a>
+									<c:if test="${authUser.no == boardVo.userNo}">
+										<a href="/mysite2/board?action=delete&no=${boardVo.no}">[삭제]</a>
 									</c:if>
 								</td>
 							

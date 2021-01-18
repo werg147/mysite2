@@ -21,6 +21,9 @@ public class BoardController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("BoardController");
 		
+		//한글깨짐방지 (post)
+		request.setCharacterEncoding("UTF-8");
+		
 		//파라미터 액션값 읽기
 		String action = request.getParameter("action");
 		System.out.println("action: " + action);
@@ -137,11 +140,40 @@ public class BoardController extends HttpServlet {
 			//리다이렉트 -> 리스트
 			WebUtil.redirect(request, response, "/mysite2/board?action=list");
 			
-		}
-		
-	} 
+		} else if ("search".equals(action)) {
+			System.out.println("게시글 검색");
+			
+			//파라미터 값 읽기
+			String key = request.getParameter("key");
+			
+			//Dao -> 검색
+			BoardDao boardDao = new BoardDao();
+			List<BoardVo> searchList = boardDao.getSearchList(key);
+			
+			//리스트 담기
+			request.setAttribute("boardList", searchList);
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+			//포워드 -> 리스트
+			WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
+		
+		} else {
+			System.out.println("기본값 설정");
+			//리스트 가져오기
+			BoardDao boardDao = new BoardDao();
+			List<BoardVo> boardList = boardDao.getBoardList();
+			
+			//리스트 담기
+			request.setAttribute("boardList", boardList);
+			
+			//포워드 -> 리스트
+			WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
+		
+		}
+
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 

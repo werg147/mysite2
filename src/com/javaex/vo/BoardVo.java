@@ -1,13 +1,16 @@
 package com.javaex.vo;
 
-public class BoardVo extends UserVo {
-
+public class BoardVo {
+	// board
 	private int no;
 	private String title;
 	private String content;
 	private int hit;
 	private String regDate;
 	private int userNo;
+
+	// users
+	private String name;
 
 	public BoardVo() {
 	}
@@ -21,21 +24,22 @@ public class BoardVo extends UserVo {
 
 	public BoardVo(String name, int hit, String regDate, String title, String content, int no) {
 		super();
-		super.name = name;
+		this.no = no;
 		this.title = title;
 		this.content = content;
 		this.hit = hit;
 		this.regDate = regDate;
-		this.no = no;
+		this.name = name;
 	}
 
-	public BoardVo(int no, String title, String name, int hit, String regDate) {
+	public BoardVo(int no, String title, String name, int hit, String regDate, int userNo) {
 		super();
 		this.no = no;
 		this.title = title;
 		this.hit = hit;
 		this.regDate = regDate;
-		super.name = name;
+		this.userNo = userNo;
+		this.name = name;
 	}
 
 	public int getNo() {
